@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  // BookOpen,
   CheckCircle,
   ExternalLink,
   // Instagram
@@ -7,10 +8,15 @@ import {
 import { SiInstagram as Instagram } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import Logo from "./components/logo";
+import { useState } from "react";
 
 export default function LandingPage() {
-  const productLink = "https://organizedtiger.gumroad.com/";
+  const productLink = "https://payhip.com/b/Oa3Rr";
   const instagramLink = "https://instagram.com/organizedtiger";
+  const supportEmail = "organized.tiger@proton.me";
+
+  const [videoError, setVideoError] = useState(false); // State for video error
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -57,14 +63,27 @@ export default function LandingPage() {
       <section className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-            {/* Replace this div with your actual video embed */}
-            <div className="text-center space-y-2">
-              <BookOpen className="w-12 h-12 mx-auto text-muted-foreground" />
-              <p className="text-muted-foreground">Your video goes here</p>
-              <p className="text-sm text-muted-foreground">
-                (Embed YouTube, Vimeo, or upload directly)
-              </p>
-            </div>
+            {videoError ? (
+              <div className="text-center space-y-2">
+                <BookOpen className="w-12 h-12 mx-auto text-muted-foreground" />
+                <p className="text-muted-foreground">
+                  Oops! It looks like the video isn't available right now.
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Please switch browsers or try again later.
+                </p>
+              </div>
+            ) : (
+              <video
+                autoPlay
+                controls
+                className="rounded-md"
+                onError={() => setVideoError(true)} // Set error state if video fails to load
+              >
+                <source src="/note_taking-trailer.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            )}
           </div>
         </div>
       </section>
@@ -149,8 +168,16 @@ export default function LandingPage() {
             </a>
           </Button>
           <p className="text-sm text-muted-foreground">
-            Optional one-on-one setup support available after purchase
+            Optional one-on-one setup support available after purchase (
+            <a
+              href={`mailto:${supportEmail}`}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {supportEmail}
+            </a>
+            ).
           </p>
+          <p className="text-sm text-muted-foreground"></p>
         </div>
       </section>
 
@@ -162,6 +189,7 @@ export default function LandingPage() {
             <p className="text-sm text-muted-foreground">
               Made by students, for students
             </p>
+
             <div className="flex items-center gap-4">
               <a
                 href={instagramLink}
